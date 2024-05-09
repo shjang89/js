@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card-wrapper{
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .card-wrapper>div{
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 틀을 만들고 -->
+  <!-- 반복되는 부분을 찾아서 컴포넌트화 -->
+  <div class="card-wrapper">
+
+    <!-- <div>
+      <div>제목 : 강아지</div>
+      <img src="https://picsum.photos/id/237/200/300" alt="" width="200px">
+    </div> -->
+
+
+
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+    const url = "https://picsum.photos/v2/list?page=1&limit=20"
+    const cardWrapper = document.querySelector('.card-wrapper');
+
+    async function getData() {
+      try {
+        const result = await axios.get(url);
+        console.log(result);
+        const html = result.data.reduce( (acc, cur) => {
+          console.log(cur);
+          // acc가 문자열 이니까 여기에 아래에서 만들 imageComponent를 호출해서 붙여줄 것
+          acc += imageComponent(cur);
+          return acc;
+        }, "");
+        console.log(html);
+        cardWrapper.insertAdjacentHTML('beforeend', html)
+        // download url
+        // author
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    getData();
+
+    function imageComponent(cur){
+      return `
+      <div>
+        <div>제목 : ${cur.author}</div>
+        <img src=${cur.download_url} alt="" width="200px">
+      </div>
+      `
+    }
+
+  </script>
+</body>
+</html>

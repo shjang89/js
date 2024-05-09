@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,16 @@
     <script>
         const url = "https://jsonplaceholder.typicode.com/todos/";
         axios.get(url).then(res => {
-            console.log(res);
+            console.log(res.data);
+            const lastData = res.data.find(li => li.id === 200);
+            console.log(lastData);
+            console.log(lastData.id)
+            // 콜백헬 해결한다 했는데 얘도 반복되니까 깊이가 생기네?
+            // 이걸 해결하기 위해 async/await 사용
+            axios.get(url + lastData.id).then(result => console.log(result));
+
+            // 중첩요청
+            // id 가 200인 경우 https://jsonplaceholder.typicode.com/todos/200
         }).catch(error => {
             console.log(error);
         })
